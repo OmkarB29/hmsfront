@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../../api/axiosInstance";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -11,8 +11,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // optional: set a base URL for axios so you can use relative paths
-  axios.defaults.baseURL = "http://localhost:8080";
+  // baseURL is configured in the shared axios instance (supports REACT_APP_API_BASE_URL)
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -31,8 +30,8 @@ const Login = () => {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
-      // ✅ set default header for future requests
-      axios.defaults.headers.common["Authorization"] = `Bearer ${response.data.token}`;
+  // ✅ set default header for future requests on the shared axios instance
+  axios.defaults.headers.common["Authorization"] = `Bearer ${response.data.token}`;
 
       // ✅ redirect by role
       const userRole = response.data.user.role;

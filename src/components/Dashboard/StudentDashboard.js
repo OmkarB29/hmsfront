@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./StudentDashboard.css";
 
+const API_BASE = "https://hmsback-production.up.railway.app";
+
 const StudentDashboard = () => {
   const [complaints, setComplaints] = useState([]);
   const [notices, setNotices] = useState([]);
@@ -30,7 +32,7 @@ const StudentDashboard = () => {
 
   const fetchComplaints = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/student/complaints", { headers });
+      const res = await axios.get(`${API_BASE}/api/student/complaints`, { headers });
       setComplaints(res.data);
     } catch (err) {
       console.error("Error fetching complaints:", err);
@@ -39,7 +41,7 @@ const StudentDashboard = () => {
 
   const fetchNotices = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/student/notices", { headers });
+      const res = await axios.get(`${API_BASE}/api/student/notices`, { headers });
       setNotices(res.data);
     } catch (err) {
       console.error("Error fetching notices:", err);
@@ -48,7 +50,7 @@ const StudentDashboard = () => {
 
   const fetchRoom = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/student/room", { headers });
+      const res = await axios.get(`${API_BASE}/api/student/room`, { headers });
       setRoom(res.data);
     } catch (err) {
       console.error("Error fetching room details:", err);
@@ -57,7 +59,7 @@ const StudentDashboard = () => {
 
   const fetchFees = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/student/fees", { headers });
+      const res = await axios.get(`${API_BASE}/api/student/fees`, { headers });
       setFees(res.data);
     } catch (err) {
       console.error("Error fetching fee details:", err);
@@ -66,7 +68,7 @@ const StudentDashboard = () => {
 
   const fetchRoomRequests = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/student/room-change", { headers });
+      const res = await axios.get(`${API_BASE}/api/student/room-change`, { headers });
       setRequests(res.data);
     } catch (err) {
       console.error("Error fetching room change requests:", err);
@@ -83,35 +85,31 @@ const StudentDashboard = () => {
         roomNumber: formData.roomNumber,
         message: formData.message,
       };
-      await axios.post("http://localhost:8080/api/student/complaints", payload, { headers });
+      await axios.post(`${API_BASE}/api/student/complaints`, payload, { headers });
       setFormData({ roomNumber: "", message: "" });
-      alert("✅ Complaint submitted successfully!");
       fetchComplaints();
     } catch (err) {
       console.error("Error submitting complaint:", err);
-      alert("❌ Failed to submit complaint.");
     }
   };
 
   const handlePayment = async () => {
     try {
-      await axios.post("http://localhost:8080/api/student/fees/pay", {}, { headers });
+      await axios.post(`${API_BASE}/api/student/fees/pay`, {}, { headers });
       alert("✅ Payment Successful!");
       fetchFees();
     } catch (err) {
       console.error("Payment failed:", err);
-      alert("❌ Payment failed. Try again.");
+      alert("Payment failed. Try again.");
     }
   };
 
   const deleteComplaint = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/api/student/complaints/${id}`, { headers });
-      alert("✅ Complaint deleted!");
+      await axios.delete(`${API_BASE}/api/student/complaints/${id}`, { headers });
       fetchComplaints();
     } catch (err) {
       console.error("Error deleting complaint:", err);
-      alert("❌ Failed to delete complaint.");
     }
   };
 
@@ -124,13 +122,12 @@ const StudentDashboard = () => {
         requestedRoom: roomChange.requestedRoom,
         reason: roomChange.reason,
       };
-      await axios.post("http://localhost:8080/api/student/room-change", payload, { headers });
-      alert("✅ Room change request submitted successfully!");
+      await axios.post(`${API_BASE}/api/student/room-change`, payload, { headers });
+      alert("Request submitted successfully!");
       setRoomChange({ currentRoom: "", requestedRoom: "", reason: "" });
       fetchRoomRequests();
     } catch (err) {
       console.error("Error submitting room change request:", err);
-      alert("❌ Failed to submit room change request.");
     }
   };
 

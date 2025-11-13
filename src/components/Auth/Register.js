@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios from "../../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
+
+// baseURL is configured in the shared axios instance (supports REACT_APP_API_BASE_URL)
 
 const Register = () => {
   const [formData, setFormData] = useState({
