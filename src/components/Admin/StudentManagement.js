@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 
 function StudentManagement() {
@@ -12,12 +12,7 @@ function StudentManagement() {
   const [editingId, setEditingId] = useState(null);
   const token = localStorage.getItem("token");
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    fetchStudents();
-  }, []);
-
-  const fetchStudents = async () => {
+  const fetchStudents = useCallback(async () => {
     try {
       const res = await axios.get("http://localhost:8080/api/students", {
         headers: { Authorization: `Bearer ${token}` },
@@ -26,7 +21,11 @@ function StudentManagement() {
     } catch (err) {
       console.error("Error fetching students:", err);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    fetchStudents();
+  }, [fetchStudents]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

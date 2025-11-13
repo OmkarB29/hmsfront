@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 
 function ComplaintForm() {
@@ -11,7 +11,7 @@ function ComplaintForm() {
 
   const token = localStorage.getItem("token");
 
-  const fetchComplaints = async () => {
+  const fetchComplaints = useCallback(async () => {
     try {
       const res = await axios.get("http://localhost:8080/api/student/complaints", {
         headers: { Authorization: `Bearer ${token}` },
@@ -20,12 +20,11 @@ function ComplaintForm() {
     } catch (err) {
       console.error("Error fetching complaints:", err);
     }
-  };
+  }, [token]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchComplaints();
-  }, []);
+  }, [fetchComplaints]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

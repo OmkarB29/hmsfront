@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
@@ -16,12 +16,7 @@ const FeeManagement = () => {
   const token = localStorage.getItem("token");
 
   // Fetch all fees on mount
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    fetchFees();
-  }, []);
-
-  const fetchFees = async () => {
+  const fetchFees = useCallback(async () => {
     try {
       const res = await axios.get("http://localhost:8080/api/admin/fees", {
         headers: { Authorization: `Bearer ${token}` },
@@ -30,7 +25,11 @@ const FeeManagement = () => {
     } catch (err) {
       console.error("Error fetching fees:", err);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    fetchFees();
+  }, [fetchFees]);
 
   // Add Fee
   const handleAdd = async (e) => {

@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 
 const ComplaintManagement = () => {
   const [complaints, setComplaints] = useState([]);
   const token = localStorage.getItem("token");
 
-  const fetchComplaints = async () => {
+  const fetchComplaints = useCallback(async () => {
     const res = await axios.get("http://localhost:8080/api/complaints", {
       headers: { Authorization: `Bearer ${token}` },
     });
     setComplaints(res.data);
-  };
+  }, [token]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchComplaints();
-  }, []);
+  }, [fetchComplaints]);
 
   const updateStatus = async (id, status) => {
     await axios.put(

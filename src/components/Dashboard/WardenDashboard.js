@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import axios from "axios";
 import "./WardenDashboard.css";
 
@@ -11,26 +11,55 @@ const WardenDashboard = () => {
   const [activeSection, setActiveSection] = useState("overview");
 
   const token = localStorage.getItem("token");
-  const headers = { Authorization: `Bearer ${token}` };
-
-  // Fetch all data on component mount
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    fetchComplaints();
-    fetchNotices();
-    fetchStudents();
-    fetchRoomRequests();
-  }, []);
+  const headers = useMemo(() => ({ Authorization: `Bearer ${token}` }), [token]);
 
   // Fetch Complaints
-  const fetchComplaints = async () => {
+  const fetchComplaints = useCallback(async () => {
     try {
       const res = await axios.get("http://localhost:8080/api/warden/complaints", { headers });
       setComplaints(res.data);
     } catch (err) {
       console.error("Error fetching complaints:", err);
     }
-  };
+  }, [headers]);
+
+  // Fetch Notices
+  const fetchNotices = useCallback(async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/warden/notices", { headers });
+      setNotices(res.data);
+    } catch (err) {
+      console.error("Error fetching notices:", err);
+    }
+  }, [headers]);
+
+  // Fetch Students
+  const fetchStudents = useCallback(async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/warden/students", { headers });
+      setStudents(res.data);
+    } catch (err) {
+      console.error("Error fetching students:", err);
+    }
+  }, [headers]);
+
+  // Fetch Room Requests
+  const fetchRoomRequests = useCallback(async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/warden/room-change", { headers });
+      setRoomRequests(res.data);
+    } catch (err) {
+      console.error("Error fetching room change requests:", err);
+    }
+  }, [headers]);
+
+  // Fetch all data on component mount
+  useEffect(() => {
+    fetchComplaints();
+    fetchNotices();
+    fetchStudents();
+    fetchRoomRequests();
+  }, [fetchComplaints, fetchNotices, fetchStudents, fetchRoomRequests]);
 
   // Resolve Complaint
   const resolveComplaint = async (id) => {
@@ -41,16 +70,6 @@ const WardenDashboard = () => {
     } catch (err) {
       console.error("Error resolving complaint:", err);
       alert("❌ Failed to resolve complaint.");
-    }
-  };
-
-  // Fetch Notices
-  const fetchNotices = async () => {
-    try {
-      const res = await axios.get("http://localhost:8080/api/warden/notices", { headers });
-      setNotices(res.data);
-    } catch (err) {
-      console.error("Error fetching notices:", err);
     }
   };
 
@@ -88,16 +107,6 @@ const WardenDashboard = () => {
     }
   };
 
-  // Fetch Students
-  const fetchStudents = async () => {
-    try {
-      const res = await axios.get("http://localhost:8080/api/warden/students", { headers });
-      setStudents(res.data);
-    } catch (err) {
-      console.error("Error fetching students:", err);
-    }
-  };
-
   // Update Student Room
   const updateRoom = async (id) => {
     const newRoom = prompt("Enter new room number:");
@@ -113,16 +122,6 @@ const WardenDashboard = () => {
     } catch (err) {
       console.error("Error updating room:", err);
       alert("❌ Failed to update room.");
-    }
-  };
-
-  // Fetch Room Requests
-  const fetchRoomRequests = async () => {
-    try {
-      const res = await axios.get("http://localhost:8080/api/warden/room-change", { headers });
-      setRoomRequests(res.data);
-    } catch (err) {
-      console.error("Error fetching room change requests:", err);
     }
   };
 

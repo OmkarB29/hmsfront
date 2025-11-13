@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 
 const RoomManagement = () => {
@@ -7,7 +7,7 @@ const RoomManagement = () => {
   const [capacity, setCapacity] = useState("");
   const token = localStorage.getItem("token");
 
-  const fetchRooms = async () => {
+  const fetchRooms = useCallback(async () => {
     try {
       const res = await axios.get("http://localhost:8080/api/admin/rooms", {
         headers: { Authorization: `Bearer ${token}` },
@@ -16,12 +16,11 @@ const RoomManagement = () => {
     } catch (err) {
       console.error("Error fetching rooms:", err);
     }
-  };
+  }, [token]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchRooms();
-  }, []);
+  }, [fetchRooms]);
 
   const handleAdd = async (e) => {
     e.preventDefault();

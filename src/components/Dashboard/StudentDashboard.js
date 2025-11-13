@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import axios from "axios";
 import "./StudentDashboard.css";
 
@@ -20,61 +20,60 @@ const StudentDashboard = () => {
 
   const token = localStorage.getItem("token");
   const user = JSON.parse(localStorage.getItem("user"));
-  const headers = { Authorization: `Bearer ${token}` };
+  const headers = useMemo(() => ({ Authorization: `Bearer ${token}` }), [token]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    fetchComplaints();
-    fetchNotices();
-    fetchRoom();
-    fetchFees();
-    fetchRoomRequests();
-  }, []);
-
-  const fetchComplaints = async () => {
+  const fetchComplaints = useCallback(async () => {
     try {
       const res = await axios.get(`${API_BASE}/api/student/complaints`, { headers });
       setComplaints(res.data);
     } catch (err) {
       console.error("Error fetching complaints:", err);
     }
-  };
+  }, [headers]);
 
-  const fetchNotices = async () => {
+  const fetchNotices = useCallback(async () => {
     try {
       const res = await axios.get(`${API_BASE}/api/student/notices`, { headers });
       setNotices(res.data);
     } catch (err) {
       console.error("Error fetching notices:", err);
     }
-  };
+  }, [headers]);
 
-  const fetchRoom = async () => {
+  const fetchRoom = useCallback(async () => {
     try {
       const res = await axios.get(`${API_BASE}/api/student/room`, { headers });
       setRoom(res.data);
     } catch (err) {
       console.error("Error fetching room details:", err);
     }
-  };
+  }, [headers]);
 
-  const fetchFees = async () => {
+  const fetchFees = useCallback(async () => {
     try {
       const res = await axios.get(`${API_BASE}/api/student/fees`, { headers });
       setFees(res.data);
     } catch (err) {
       console.error("Error fetching fee details:", err);
     }
-  };
+  }, [headers]);
 
-  const fetchRoomRequests = async () => {
+  const fetchRoomRequests = useCallback(async () => {
     try {
       const res = await axios.get(`${API_BASE}/api/student/room-change`, { headers });
       setRequests(res.data);
     } catch (err) {
       console.error("Error fetching room change requests:", err);
     }
-  };
+  }, [headers]);
+
+  useEffect(() => {
+    fetchComplaints();
+    fetchNotices();
+    fetchRoom();
+    fetchFees();
+    fetchRoomRequests();
+  }, [fetchComplaints, fetchNotices, fetchRoom, fetchFees, fetchRoomRequests]);
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
