@@ -14,6 +14,7 @@ const WardenDashboard = () => {
   const headers = { Authorization: `Bearer ${token}` };
 
   // Fetch all data on component mount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchComplaints();
     fetchNotices();

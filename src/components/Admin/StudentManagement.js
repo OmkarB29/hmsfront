@@ -12,6 +12,7 @@ function StudentManagement() {
   const [editingId, setEditingId] = useState(null);
   const token = localStorage.getItem("token");
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchStudents();
   }, []);

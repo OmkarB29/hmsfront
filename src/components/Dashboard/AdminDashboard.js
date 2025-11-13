@@ -14,9 +14,6 @@ function AdminDashboard() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [allStudents, setAllStudents] = useState([]);
-  const [allRooms, setAllRooms] = useState([]);
-  const [allFees, setAllFees] = useState([]);
 
   const user = JSON.parse(localStorage.getItem("user"));
 

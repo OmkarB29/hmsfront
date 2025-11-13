@@ -22,6 +22,7 @@ const StudentDashboard = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const headers = { Authorization: `Bearer ${token}` };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchComplaints();
     fetchNotices();

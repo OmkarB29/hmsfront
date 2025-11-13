@@ -16,6 +16,7 @@ const FeeManagement = () => {
   const token = localStorage.getItem("token");
 
   // Fetch all fees on mount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchFees();
   }, []);

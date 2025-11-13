@@ -12,7 +12,6 @@ import AdminDashboard from "./components/Dashboard/AdminDashboard";
 import WardenDashboard from "./components/Dashboard/WardenDashboard";
 import ReportGeneration from "./components/Admin/ReportGeneration";
 
-import AdminRegistrationManagement from "./components/Admin/AdminRegistrationManagement";
 import StudentManagement from "./components/Admin/StudentManagement";
 import RoomManagement from "./components/Admin/RoomManagement";
 import FeeManagement from "./components/Admin/FeeManagement";
