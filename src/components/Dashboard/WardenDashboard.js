@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import axios from "axios";
+import axios from "../../api/axiosInstance";
 import "./WardenDashboard.css";
 
 const WardenDashboard = () => {
@@ -16,7 +16,7 @@ const WardenDashboard = () => {
   // Fetch Complaints
   const fetchComplaints = useCallback(async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/warden/complaints", { headers });
+      const res = await axios.get("/api/warden/complaints", { headers });
       setComplaints(res.data);
     } catch (err) {
       console.error("Error fetching complaints:", err);
@@ -26,7 +26,7 @@ const WardenDashboard = () => {
   // Fetch Notices
   const fetchNotices = useCallback(async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/warden/notices", { headers });
+      const res = await axios.get("/api/warden/notices", { headers });
       setNotices(res.data);
     } catch (err) {
       console.error("Error fetching notices:", err);
@@ -36,7 +36,7 @@ const WardenDashboard = () => {
   // Fetch Students
   const fetchStudents = useCallback(async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/warden/students", { headers });
+      const res = await axios.get("/api/warden/students", { headers });
       setStudents(res.data);
     } catch (err) {
       console.error("Error fetching students:", err);
@@ -46,7 +46,7 @@ const WardenDashboard = () => {
   // Fetch Room Requests
   const fetchRoomRequests = useCallback(async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/warden/room-change", { headers });
+      const res = await axios.get("/api/warden/room-change", { headers });
       setRoomRequests(res.data);
     } catch (err) {
       console.error("Error fetching room change requests:", err);
@@ -64,7 +64,7 @@ const WardenDashboard = () => {
   // Resolve Complaint
   const resolveComplaint = async (id) => {
     try {
-      await axios.put(`http://localhost:8080/api/warden/complaints/${id}/resolve`, {}, { headers });
+      await axios.put(`/api/warden/complaints/${id}/resolve`, {}, { headers });
       alert("✅ Complaint resolved!");
       fetchComplaints();
     } catch (err) {
@@ -82,7 +82,7 @@ const WardenDashboard = () => {
     }
     try {
       await axios.post(
-        "http://localhost:8080/api/warden/notices",
+        "/api/warden/notices",
         { message: noticeText, postedBy: "WARDEN" },
         { headers }
       );
@@ -98,7 +98,7 @@ const WardenDashboard = () => {
   // Delete Notice
   const deleteNotice = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/api/warden/notices/${id}`, { headers });
+      await axios.delete(`/api/warden/notices/${id}`, { headers });
       alert("✅ Notice deleted!");
       fetchNotices();
     } catch (err) {
@@ -113,7 +113,7 @@ const WardenDashboard = () => {
     if (!newRoom) return;
     try {
       await axios.put(
-        `http://localhost:8080/api/warden/students/${id}/room?roomNo=${newRoom}`,
+        `/api/warden/students/${id}/room?roomNo=${newRoom}`,
         {},
         { headers }
       );
@@ -128,7 +128,7 @@ const WardenDashboard = () => {
   // Approve Room Request
   const handleApprove = async (id) => {
     try {
-      await axios.put(`http://localhost:8080/api/warden/room-change/${id}/approve`, {}, { headers });
+      await axios.put(`/api/warden/room-change/${id}/approve`, {}, { headers });
       alert("✅ Request approved!");
       fetchRoomRequests();
     } catch (err) {
@@ -140,7 +140,7 @@ const WardenDashboard = () => {
   // Reject Room Request
   const handleReject = async (id) => {
     try {
-      await axios.put(`http://localhost:8080/api/warden/room-change/${id}/reject`, {}, { headers });
+      await axios.put(`/api/warden/room-change/${id}/reject`, {}, { headers });
       alert("✅ Request rejected!");
       fetchRoomRequests();
     } catch (err) {

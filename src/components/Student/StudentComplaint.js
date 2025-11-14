@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import axios from "../../api/axiosInstance";
 
 function ComplaintForm() {
   const [complaints, setComplaints] = useState([]);
@@ -13,7 +13,7 @@ function ComplaintForm() {
 
   const fetchComplaints = useCallback(async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/student/complaints", {
+      const res = await axios.get("/api/student/complaints", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setComplaints(res.data);
@@ -33,7 +33,7 @@ function ComplaintForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:8080/api/student/complaints", formData, {
+      await axios.post("/api/student/complaints", formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert("Complaint submitted!");
