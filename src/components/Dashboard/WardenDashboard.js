@@ -53,19 +53,13 @@ const WardenDashboard = () => {
     }
   }, [headers]);
 
-  // Fetch all data on component mount and when user changes
+  // Fetch all data on component mount
   useEffect(() => {
-    // Clear all state on user change
-    setComplaints([]);
-    setNotices([]);
-    setStudents([]);
-    setRoomRequests([]);
-    
     fetchComplaints();
     fetchNotices();
     fetchStudents();
     fetchRoomRequests();
-  }, [token, fetchComplaints, fetchNotices, fetchStudents, fetchRoomRequests]);
+  }, [fetchComplaints, fetchNotices, fetchStudents, fetchRoomRequests]);
 
   // Resolve Complaint
   const resolveComplaint = async (id) => {
@@ -158,8 +152,6 @@ const WardenDashboard = () => {
   const handleLogout = () => {
     if (window.confirm("Are you sure you want to logout?")) {
       localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      delete axios.defaults.headers.common["Authorization"];
       window.location.href = "/login";
     }
   };

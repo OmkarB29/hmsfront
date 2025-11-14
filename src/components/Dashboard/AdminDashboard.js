@@ -18,15 +18,8 @@ function AdminDashboard() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    setDashboardData({
-      pendingRegistrations: 0,
-      totalStudents: 0,
-      totalRooms: 0,
-      totalFeesCollected: 0
-    });
     fetchDashboardData();
-  }, [user?.id]);
+  }, []);
 
   const fetchDashboardData = async () => {
     try {
@@ -77,7 +70,6 @@ function AdminDashboard() {
       localStorage.removeItem("role");
       localStorage.removeItem("username");
       localStorage.removeItem("user");
-      delete axios.defaults.headers.common["Authorization"];
       navigate("/login");
     }
   };

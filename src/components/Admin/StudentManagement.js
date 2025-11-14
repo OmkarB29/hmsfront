@@ -72,27 +72,6 @@ function StudentManagement() {
     }
   };
 
-  const deleteAllStudents = async () => {
-    if (!window.confirm("⚠️ Are you sure you want to delete ALL students? This action cannot be undone!")) {
-      return;
-    }
-    if (!window.confirm("🚨 FINAL WARNING: This will permanently delete ALL student records. Type 'DELETE' to confirm.")) {
-      return;
-    }
-    try {
-      for (const student of students) {
-        await axios.delete(`http://localhost:8080/api/students/${student.id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-      }
-      alert("✅ All students have been deleted!");
-      fetchStudents();
-    } catch (err) {
-      console.error("Error deleting all students:", err);
-      alert("❌ Error deleting students. Please try again.");
-    }
-  };
-
   return (
     <div className="p-4">
       <h2>👨‍🎓 Student Management</h2>
@@ -104,23 +83,6 @@ function StudentManagement() {
         <input type="text" name="department" placeholder="Department" value={formData.department} onChange={handleChange} required />
         <button type="submit">{editingId ? "Update Student" : "Add Student"}</button>
       </form>
-
-      <div style={{ marginBottom: "1rem" }}>
-        <button 
-          onClick={deleteAllStudents} 
-          style={{ 
-            backgroundColor: "#dc3545", 
-            color: "white", 
-            padding: "0.5rem 1rem", 
-            border: "none", 
-            borderRadius: "4px",
-            cursor: "pointer",
-            fontSize: "0.95rem"
-          }}
-        >
-          🗑️ Delete All Students
-        </button>
-      </div>
 
       <table border="1" cellPadding="8" style={{ width: "100%", textAlign: "left" }}>
         <thead>

@@ -68,20 +68,12 @@ const StudentDashboard = () => {
   }, [headers]);
 
   useEffect(() => {
-    // Clear all data when user changes
-    setComplaints([]);
-    setNotices([]);
-    setRoom(null);
-    setFees({ amount: "", status: "" });
-    setRequests([]);
-    
-    // Fetch fresh data for the current user
     fetchComplaints();
     fetchNotices();
     fetchRoom();
     fetchFees();
     fetchRoomRequests();
-  }, [user?.id, fetchComplaints, fetchNotices, fetchRoom, fetchFees, fetchRoomRequests]);
+  }, [fetchComplaints, fetchNotices, fetchRoom, fetchFees, fetchRoomRequests]);
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -142,8 +134,6 @@ const StudentDashboard = () => {
   const handleLogout = () => {
     if (window.confirm("Are you sure you want to logout?")) {
       localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      delete axios.defaults.headers.common["Authorization"];
       window.location.href = "/login";
     }
   };
