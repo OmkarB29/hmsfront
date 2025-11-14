@@ -51,12 +51,16 @@ const StudentDashboard = () => {
 
   const fetchFees = useCallback(async () => {
     try {
+      console.log("Fetching fees with token:", token);
       const res = await axios.get(`${API_BASE}/api/student/fees`, { headers });
+      console.log("Fees response:", res.data);
       setFees(res.data);
     } catch (err) {
       console.error("Error fetching fee details:", err);
+      console.error("Response status:", err.response?.status);
+      console.error("Response data:", err.response?.data);
     }
-  }, [headers]);
+  }, [headers, token]);
 
   const fetchRoomRequests = useCallback(async () => {
     try {
@@ -294,16 +298,16 @@ const StudentDashboard = () => {
           <div className="student-section active">
             <div className="section-card">
               <h3>💰 Hostel Fees</h3>
-              {fees.amount ? (
+              {fees && fees.studentName ? (
                 <div className="info-block">
                   <div className="info-item">
                     <label>Amount:</label>
-                    <span>₹{fees.amount}</span>
+                    <span>₹{fees.amount || 0}</span>
                   </div>
                   <div className="info-item">
                     <label>Status:</label>
                     <span className={`status-badge status-${fees.status?.toLowerCase()}`}>
-                      {fees.status}
+                      {fees.status || "UNPAID"}
                     </span>
                   </div>
                   {fees.status !== "PAID" && (
